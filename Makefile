@@ -16,5 +16,5 @@ env:
 .PHONY: build
 build: env custom_prompts.json
 	@echo "Building..."
-	@go build src/main.go
+	@go build -o $(APP_NAME) src/main.go
 	@echo "Build complete!"
