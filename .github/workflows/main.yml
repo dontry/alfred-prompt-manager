@@ -32,9 +32,6 @@ jobs:
         path: package.json
         property: version
 
-    - name: Update Version
-      run: make update_version VERSION=${{steps.version.outputs.value}}
-
     - name: Compress binaries
       uses: svenstaro/upx-action@v2
       with:
