@@ -1,5 +1,7 @@
 
 APP_NAME=prompt-manager
+VERSION?=$(shell git describe --tags)
+
 
 custom_prompts.json:
 	@echo "Creating custom prompts file..."
@@ -22,8 +24,14 @@ build: env custom_prompts.json
 	@echo "Build complete!"
 
 
-.PHONY: archive
-archive: build
+.PHONY: archive 
+archive: build version
 	@echo "Archiving..."
 	@zip -r $(APP_NAME).alfredworkflow $(APP_NAME) custom_prompts.json icon.png info.plist
 	@echo "Archive complete!"
+
+
+.PHONY: version
+version:
+	@echo "{ \"version\": \"$(VERSION)\" }" > package.json
+	@plutil -replace version -string $(VERSION) info.plist
