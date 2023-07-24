@@ -1,5 +1,5 @@
 
-APP_NAME=alfred-prompt-manager
+APP_NAME=prompt-manager
 
 custom_prompts.json:
 	@echo "Creating custom prompts file..."
@@ -20,3 +20,10 @@ build: env custom_prompts.json
 	@echo "Building..."
 	@go build -v -o $(APP_NAME) src/main.go
 	@echo "Build complete!"
+
+
+.PHONY: archive
+archive: build
+	@echo "Archiving..."
+	@zip -r $(APP_NAME).alfredworkflow $(APP_NAME) custom_prompts.json icon.png info.plist
+	@echo "Archive complete!"
