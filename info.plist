@@ -401,7 +401,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./alfred-prompt-manager download</string>
+				<string>./bin/afred-prompt-manager download</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -686,7 +686,7 @@
 				<key>runningsubtext</key>
 				<string>Filtering</string>
 				<key>script</key>
-				<string>./alfred-prompt-manager query --action copy --all "$1"</string>
+				<string>./bin/afred-prompt-manager query --action copy --all "$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -911,7 +911,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./alfred-prompt-manager add "$name" "$content"</string>
+				<string>./bin/afred-prompt-manager add "$name" "$content"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -996,7 +996,7 @@
 				<key>runningsubtext</key>
 				<string>Filtering</string>
 				<key>script</key>
-				<string>./alfred-prompt-manager query --action delete "$1"</string>
+				<string>./bin/afred-prompt-manager query --action delete "$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -1025,7 +1025,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./alfred-prompt-manager delete "$1"</string>
+				<string>./bin/afred-prompt-manager delete "$1"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>

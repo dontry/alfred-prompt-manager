@@ -10,8 +10,6 @@ testdir="${root}/testenv"
 export alfred_workflow_bundleid="com.github.dongc.prompts"
 export alfred_workflow_data="${testdir}/data"
 export alfred_workflow_cache="${testdir}/cache"
-echo $alfred_workflow_bundleid
-echo 
 
 test -f "$HOME/Library/Preferences/com.runningwithcrayons.Alfred.plist" || {
 	export alfred_version="4.6.6"

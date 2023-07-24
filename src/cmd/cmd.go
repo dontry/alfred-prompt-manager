@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/dontry/alfred-prompt-manager/service"
+	"github.com/dontry/alfred-prompt-manager/src/service"
 	"github.com/spf13/cobra"
 )
 

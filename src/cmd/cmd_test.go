@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/dontry/alfred-prompt-manager/service"
+	"github.com/dontry/alfred-prompt-manager/src/service"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -70,7 +70,7 @@ func TestDownload(t *testing.T) {
 func TestAdd(t *testing.T) {
 	setupTest()
 	t.Run("add successfully", func(t *testing.T) {
-		_, err := executeCommand(rootCmd, "add", "test:prompt")
+		_, err := executeCommand(rootCmd, "add", "test", "prompt")
 		assert.Nil(t, err)
 
 		data, err := ioutil.ReadFile("./custom_prompts.json")

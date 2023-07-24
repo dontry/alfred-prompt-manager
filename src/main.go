@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/dontry/alfred-prompt-manager/cmd"
+	"github.com/dontry/alfred-prompt-manager/src/cmd"
 )
 
 func main() {
