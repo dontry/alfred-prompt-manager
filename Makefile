@@ -13,8 +13,10 @@ env:
 	@sh env.sh
 	@echo "Environment variables set up!"
 
+
+
 .PHONY: build
 build: env custom_prompts.json
 	@echo "Building..."
-	@go build -o $(APP_NAME) src/main.go
+	@go build -v -o $(APP_NAME) src/main.go
 	@echo "Build complete!"

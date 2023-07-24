@@ -21,10 +21,3 @@ export alfred_workflow_name="alfred-dndbeyond-monster-workflow"
 
 # Prevent random ID from being generated
 export AW_SESSION_ID="local-session"
-
-
-# set GOPATH
-export GOPATH="$(pwd)"
-
-echo "alfred_workflow_bundleid=$alfred_workflow_bundleid"
-echo "GOPATH=$GOPATH"
