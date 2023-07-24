@@ -25,7 +25,7 @@ build: env custom_prompts.json
 
 
 .PHONY: archive 
-archive: build version
+archive: build
 	@echo "Archiving..."
 	@zip -r $(APP_NAME).alfredworkflow $(APP_NAME) custom_prompts.json icon.png info.plist
 	@echo "Archive complete!"
@@ -33,5 +33,4 @@ archive: build version
 
 .PHONY: version
 version:
-	echo "{ \"version\": \"$(VERSION)\" }" > package.json
-	plutil -replace version -string $(VERSION) info.plist
+	@echo "{ \"version\": \"$(VERSION)\" }" > package.json

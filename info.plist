@@ -1314,7 +1314,7 @@ Type your keyword into Alfred, followed by your input text if needed, and you'll
 	<key>userconfigurationconfig</key>
 	<array/>
 	<key>version</key>
-	<string>v1.0.2</string>
+	<string>v1.0.5</string>
 	<key>webaddress</key>
 	<string>https://www.alfredapp.com</string>
 </dict>
