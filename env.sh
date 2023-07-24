@@ -25,3 +25,6 @@ export AW_SESSION_ID="local-session"
 
 # set GOPATH
 export GOPATH="$(pwd)"
+
+echo "alfred_workflow_bundleid=$alfred_workflow_bundleid"
+echo "GOPATH=$GOPATH"
