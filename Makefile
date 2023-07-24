@@ -33,5 +33,5 @@ archive: build version
 
 .PHONY: version
 version:
-	@echo "{ \"version\": \"$(VERSION)\" }" > package.json
-	@plutil -replace version -string $(VERSION) info.plist
+	echo "{ \"version\": \"$(VERSION)\" }" > package.json
+	plutil -replace version -string $(VERSION) info.plist
