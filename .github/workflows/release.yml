@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  GOPATH: ${{ github.workspace }}
+
+
 jobs:
 
   build:
@@ -21,9 +25,9 @@ jobs:
     - name: Display Go version
       run: go version
     
-    - name: Fetch dependencies
+    - name: Install dependencies
       run: |
-        go get -v -t -d ./...
+        go get .
 
     - name: Build
       run: make build
