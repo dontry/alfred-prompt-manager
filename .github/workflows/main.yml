@@ -31,6 +31,10 @@ jobs:
         files: |
           prompt-manager
 
+    - name: Archive
+      run: make archive
+
+
     - name: Build an Alfred Workflow
       # You may pin to the exact commit or the version.
       # uses: almibarss/build-alfred-workflow@557434a545657b1b5e7a7ed010de62ead21578cb
@@ -38,16 +42,17 @@ jobs:
       with:
         # Directory containing the sources of the workflow
         workflow_dir: '.'
-        exclude_patterns: '*.go go.* *.sh *.gif .git* icons/* src/* .vscode .github'
+        exclude_patterns: '*.go go.* *.sh *.gif .git* icons/* src/*'
 
     - name: Create Release
-      uses: softprops/action-gh-release@v1
+      uses: actions/create-release@latest
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         draft: true
         prerelease: false
-    
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
 
     - name: Upload Release Asset
       id: upload-release-asset
