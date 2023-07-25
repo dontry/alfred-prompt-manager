@@ -34,3 +34,4 @@ archive: build
 .PHONY: version
 version:
 	@echo "{ \"version\": \"$(VERSION)\" }" > package.json
+	@sed -i '' 's/<string>v[0-9]\.[0-9]\.[0-9]<\/string>/<string>$(VERSION)<\/string>/g' info.plist
