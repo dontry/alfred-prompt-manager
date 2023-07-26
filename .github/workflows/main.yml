@@ -48,13 +48,6 @@ jobs:
         path: package.json
         property: version
     
-    - name: Compress binaries
-      id: compress
-      uses: svenstaro/upx-action@v2
-      with:
-        files: |
-          prompt-manager_${{ matrix.os }}_${{ matrix.arch }}
-
     - name: Archive
       id: archive
       run: make archive GO_TARGET_OS=${{ matrix.os }} GO_TARGET_ARCH=${{ matrix.arch }} 
