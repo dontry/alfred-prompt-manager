@@ -5,11 +5,13 @@ on:
     tags:
       - "v*.*.*"
 
-
 jobs:
-
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [darwin]
+        arch: [amd64, arm64]
     steps:
     - uses: actions/checkout@v3
 
@@ -23,10 +25,21 @@ jobs:
     - name: Install dependencies
       id: install
       run: go mod tidy
+    
+    - name: Cache Go modules
+      id: cache
+      uses: actions/cache@v2
+      with: 
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-${{ env.cache-name }}-
+          ${{ runner.OS }}-build-
+          ${{ runner.OS }}-          
 
     - name: Build
       id: build
-      run: make build
+      run: make build GO_TARGET_OS=${{ matrix.os }} GO_TARGET_ARCH=${{ matrix.arch }}
     
     - name: Get Version
       id: version
@@ -34,17 +47,17 @@ jobs:
       with:
         path: package.json
         property: version
-
+    
     - name: Compress binaries
       id: compress
       uses: svenstaro/upx-action@v2
       with:
         files: |
-          prompt-manager
+          prompt-manager_${{ matrix.os }}_${{ matrix.arch }}
 
     - name: Archive
       id: archive
-      run: make archive
+      run: make archive GO_TARGET_OS=${{ matrix.os }} GO_TARGET_ARCH=${{ matrix.arch }} 
 
     - name: Create Release
       id: create_release
@@ -52,13 +65,4 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-          prompt-manager.alfredworkflow
-
-    # - name: Upload Artifact
-    #   id: upload-artifact
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: prompt-manager.alfredworkflow
-    #     path: ./prompt-manager.alfredworkflow
-
-        
+          prompt-manager_${{ matrix.os }}_${{ matrix.arch }}.alfredworkflow
