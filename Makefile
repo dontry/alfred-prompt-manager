@@ -2,9 +2,6 @@ APP_NAME=prompt-manager
 VERSION?=$(shell git describe --tags)
 GO_TARGET_OS?=darwin
 GO_TARGET_ARCH?=arm64
-OUTPUT_FILE := $(APP_NAME)_$(GO_TARGET_OS)_$(GO_TARGET_ARCH)
-
-
 
 custom_prompts.json:
 	@echo "Creating custom prompts file..."
@@ -12,19 +9,23 @@ custom_prompts.json:
 	@echo "[]" > custom_prompts.json
 	@echo "Custom prompts file created!"
 
+.PHONY: env
+env:
+	@echo "Setting up environment variables..."
+	@source env.sh
+	@echo "Environment variables set up!"
 
 .PHONY: build
-build:  custom_prompts.json
+build: custom_prompts.json
 	@echo "Building..."
-	@GOOS=$(GO_TARGET_OS) GOARCH=$(GO_TARGET_ARCH) go build -o "$(OUTPUT_FILE)" src/main.go
+	GOOS=$(GO_TARGET_OS) GOARCH=$(GO_TARGET_ARCH) go build -o $(APP_NAME) src/main.go; 
 	@echo "Build complete!"
-	@go env > xx.txt
 
 
 .PHONY: archive 
 archive: build
 	@echo "Archiving..."
-	@zip -r $(OUTPUT_FILE).alfredworkflow $(OUTPUT_FILE) custom_prompts.json icon.png info.plist
+	@zip -r $(APP_NAME)_$(GO_TARGET_OS)_$(GO_TARGET_ARCH).alfredworkflow $(APP_NAME) custom_prompts.json icon.png info.plist
 	@echo "Archive complete!"
 
 
