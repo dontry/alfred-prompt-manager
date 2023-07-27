@@ -1,12 +1,13 @@
 name: main
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  push: 
+    branches:
+      - main
 
 jobs:
   build:
+    name: build
     runs-on: ubuntu-latest
     strategy:
       matrix:

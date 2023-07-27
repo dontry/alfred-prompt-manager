@@ -1,0 +1,36 @@
+name: main
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [darwin]
+        arch: [amd64, arm64]
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build
+      uses: ./build.yml
+
+    - name: Version
+      id: version
+      run: make version
+    
+    - name: Archive
+      id: archive
+      run: make archive GO_TARGET_OS=${{ matrix.os }} GO_TARGET_ARCH=${{ matrix.arch }} 
+
+    - name: Create Release
+      id: create_release
+      uses:  softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          prompt-manager_${{ matrix.os }}_${{ matrix.arch }}.alfredworkflow
