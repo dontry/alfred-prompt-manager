@@ -15,6 +15,12 @@ import (
 	aw "github.com/deanishe/awgo"
 )
 
+const (
+	CACHE_DIR          = "cache"
+	CACHE_AGE          = 86400
+	PROMPTS_CACHE_NAME = "prompts"
+)
+
 type Prompt struct {
 	Title    string `json:"title"`
 	Subtitle string `json:"subtitle"`
@@ -46,18 +52,25 @@ func (s *Service) Run(action func()) {
 
 func (s *Service) Query(input string, all bool, action string) func() {
 	return func() {
-		var awesomePrompts, customPrompts []Prompt
-		var err error
+		var prompts []Prompt
+		err := s.wf.Session.LoadOrStoreJSON(PROMPTS_CACHE_NAME, func() (prompts interface{}, err error) {
+			var awesomePrompts, customPrompts []Prompt
 
-		if all {
-			awesomePrompts, err = s.readPrompts(s.awesomePromptsFileName)
-			s.check(err)
-		}
+			if all {
+				awesomePrompts, err = s.readPrompts(s.awesomePromptsFileName)
+			}
 
-		customPrompts, err = s.readPrompts(s.customPromptsFileName)
+			if err != nil {
+				return nil, err
+			}
+
+			customPrompts, err = s.readPrompts(s.customPromptsFileName)
+
+			prompts = append(awesomePrompts, customPrompts...)
+
+			return prompts, err
+		}, &prompts)
 		s.check(err)
-
-		prompts := append(awesomePrompts, customPrompts...)
 
 		for _, p := range prompts {
 			var arg string
@@ -104,6 +117,9 @@ func (s *Service) Add(title string, subtitle string) func() {
 
 		err = s.writePrompts(prompts, s.customPromptsFileName)
 		s.check(err)
+
+		err = s.wf.Session.Clear(true)
+		s.check(err)
 	}
 }
 
@@ -125,6 +141,9 @@ func (s *Service) Delete(input string) func() {
 		}
 		err = s.writePrompts(newPrompts, s.customPromptsFileName)
 		s.check(err)
+
+		err = s.wf.Session.Clear(true)
+		s.check(err)
 	}
 }
 
@@ -134,9 +153,16 @@ func (s *Service) Download() func() {
 		s.downloadFile(s.awesomePromptsDownloadLink, tempFile)
 		data, err := s.readCSV(tempFile)
 		s.check(err)
+
+		defer func() {
+			err = s.deleteFile(tempFile)
+			s.check(err)
+		}()
+
 		err = s.writeJsonFile(data, s.awesomePromptsFileName)
 		s.check(err)
-		err = s.deleteFile(tempFile)
+
+		err = s.wf.Session.Clear(true)
 		s.check(err)
 	}
 }
@@ -217,11 +243,11 @@ func (s *Service) readCSV(filePath string) ([][]string, error) {
 }
 
 func (s *Service) writeJsonFile(raw [][]string, fileName string) error {
-	data := make([]Prompt, len(raw))
+	prompts := make([]Prompt, len(raw))
 	for i, r := range raw {
-		data[i] = Prompt{Title: r[0], Subtitle: r[1]}
+		prompts[i] = Prompt{Title: r[0], Subtitle: r[1]}
 	}
-	err := s.writePrompts(data, fileName)
+	err := s.writePrompts(prompts, fileName)
 	if err != nil {
 		return fmt.Errorf("failed to write json file: %v", err)
 	}

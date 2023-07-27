@@ -24,3 +24,4 @@ go.work
 */data
 bin/
 prompt-manager*
+*.json
